@@ -5,6 +5,11 @@ on:
     tags:
       - 20* # Covers tags until year 2100.
 
+env:
+  # These stop SonarCloud S8544/S8541
+  # See also https://github.com/astral-sh/uv/issues/17416
+  UV_FLAGS: --locked --no-build --no-binary-package drpg
+
 jobs:
   build:
     name: Build wheel and sdist packages
@@ -69,10 +74,10 @@ jobs:
         enable-cache: true
     - name: Install build dependencies
       run: |
-        uv sync --group build
+        uv sync ${UV_FLAGS} --group build
     - name: Build Linux binary
       run: |
-        uv run pyinstaller pyinstaller-linux.spec
+        uv run ${UV_FLAGS} pyinstaller pyinstaller-linux.spec
     - name: Create GitHub release
       uses: >- # v2.6.1
         softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b
