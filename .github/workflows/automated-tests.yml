@@ -53,4 +53,6 @@ jobs:
         uv run tox
     - name: Test build sdist and wheel packages
       run: |
+        # Need this elsewhere, but this breaks with it!
+        unset UV_NO_BUILD
         uv build
